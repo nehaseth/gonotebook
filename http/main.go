@@ -22,7 +22,7 @@ var (
 func main() {
 	slowRead = flag.Int("byteReadTime", 0, "wait for x ms before reading a single byte")
 	requestCount = flag.Int("requestCount", 100, "Concurrent requests")
-	apiPath = flag.String("apiPath", "https://10.47.8.255/large", " Complete endpoint ")
+	apiPath = flag.String("apiPath", "https://10.0.0.1/large", " Complete endpoint ")
 	sleepBW = flag.Int("sleepInBw", 10, "Sleep before next request batch of concurrent requests")
 
 	flag.Parse()

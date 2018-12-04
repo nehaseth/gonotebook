@@ -38,7 +38,7 @@ func sendRequest(req string) {
 
 var (
 	slowRead *int
-	defReq = "http://10.47.11.0/fast"
+	defReq = "http://10.1.1.0/fast"
 )
 
 func main() {
