@@ -1,15 +1,24 @@
 package main
 
 import (
-	"context"
 	"time"
-
+	
 	"github.com/golang/protobuf/ptypes"
 	"github.com/golang/protobuf/ptypes/any"
-	api "github.com/osrg/gobgp/api"
-	gobgp "github.com/osrg/gobgp/pkg/server"
+	"github.com/osrg/gobgp/api"
+	"github.com/osrg/gobgp/server"
 	log "github.com/sirupsen/logrus"
 )
+
+
+func main() {
+	log.SetLevel(log.DebugLevel)
+	s := server.NewBgpServer()
+	go s.Serve()
+	g := gobgpapi.NewGrpcServer(s, "localhost:50051")
+	go g.Serve()
+	time.Sleep(100000 * time.Second)
+}
 
 func main() {
 	log.SetLevel(log.DebugLevel)
@@ -18,11 +27,11 @@ func main() {
 
 	// start grpc api server. this is not mandatory
 	// but you will be able to use `gobgp` cmd with this.
-	g := gobgp.NewGrpcServer(s, ":50051")
+	g := api.NewGrpcServer(s, ":50051")
 	go g.Serve()
 
 	// global configuration
-	if err := s.StartBgp(context.Background(), &api.StartBgpRequest{
+	if err := s.Start(context.Background(), &api.StartBgpRequest{
 		Global: &api.Global{
 			As:         65003,
 			RouterId:   "10.0.255.254",
